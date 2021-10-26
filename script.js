@@ -60,14 +60,6 @@ const gameBoard = (() => {
 
     // Helper functions to assess board state
     // 
-    // Returns true if a cell value is null
-    const emptyCell = (cell) => {
-        if (cell.value !== null) {
-            return false
-        };
-        return true;
-    };
-
     // Gets an array of vertical cells from the board
     const getColumnFromBoard = (index) => {
         column = [board[0][index], board[1][index], board[2][index]]
@@ -94,12 +86,12 @@ const gameBoard = (() => {
                     oCount++;
                 }
                 else if (board[i][j].value == null) {
-                    nullCount++
+                    nullCount++;
                 }
-            }
-        }
-        return [xCount, oCount, nullCount]
-    }
+            };
+        };
+        return [xCount, oCount, nullCount];
+    };
 
     // Gets the token counts to assess whose turn it is
     const getPlayerTurn = () => {
