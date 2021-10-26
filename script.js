@@ -68,20 +68,6 @@ const gameBoard = (() => {
         return true;
     };
 
-
-    // Only returns true if all cells on the board are empty
-    const emptyBoard = () => {
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                if (!emptyCell(board[i][j])) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    };
-
-
     // Gets an array of vertical cells from the board
     const getColumnFromBoard = (index) => {
         column = [board[0][index], board[1][index], board[2][index]]
@@ -91,6 +77,45 @@ const gameBoard = (() => {
     // Returns true if all cells in an array have the same value
     const allCellsSameValue = array => {
         array.every( value => value === arr [0] );
+    };
+
+    // Iterates over the board and counts the number of squares marked X, O, and left empty.
+    // Returns an array of the three counts
+    const countBoardTokens = () => {
+        let xCount = 0;
+        let oCount = 0;
+        let nullCount = 0;
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                if (board[i][j].value == "X") {
+                    xCount++;
+                }
+                else if (board[i][j].value == "O") {
+                    oCount++;
+                }
+                else if (board[i][j].value == null) {
+                    nullCount++
+                }
+            }
+        }
+        return [xCount, oCount, nullCount]
+    }
+
+    // Gets the token counts to assess whose turn it is
+    const getPlayerTurn = () => {
+        tokenCount = countBoardTokens;
+        // if all 9 squares are empty it is player X turn
+        if (tokenCount[2] == 9) {
+            return "X";
+        }
+        // If player X has more tokens on the board, it is player O turn
+        else if (tokenCount[0] > tokenCount[1]) {
+            return "O";
+        }
+        // If X and O have equal # of tokens it is player X turn
+        else if (tokenCount[0] == tokenCount[1]) {
+            return "X";
+        }
     };
 
 
