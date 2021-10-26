@@ -7,10 +7,11 @@ const Player = name => {
     return { sayName };
 };
 
-const Cell = (value) => {
+const Cell = (value, element) => {
     
     const setValue = (token) => {
         value = token;
+        element.innerHTML = token
     };
 
     return { setValue, value }
@@ -35,14 +36,16 @@ const gameBoard = (() => {
             boardDisplay.appendChild(row);
             // For each "cell":
             for (let j = 0; j <= 2; j++) {
-                // Create a cell at the coordinate in the board array
-                board[i][j] = Cell("X");
+ 
 
                 // Create a cell element and append it to the html row element
                 let cell = document.createElement("div");
+                // Create a cell at the coordinate in the board array
+                board[i][j] = Cell("X", cell);
                 cell.classList.add("cell");
                 cell.innerHTML = board[i][j].value; 
                 row.appendChild(cell);
+
             }
         }
         return board
@@ -52,5 +55,6 @@ const gameBoard = (() => {
 })();
 
 gameBoard.initializeBoard();
+
 
 
