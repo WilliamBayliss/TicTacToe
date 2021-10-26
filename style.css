@@ -1,0 +1,25 @@
+.content {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    display: flex;
+}
+
+.cell {
+    border: 1px solid black;
+    padding: 50px;
+}
+
+
+#game-board {
+    margin-top: 25px;
+}
+
