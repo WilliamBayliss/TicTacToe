@@ -7,5 +7,3 @@ const Player = name => {
 
     return { sayName }
 }
-
-player1.sayName()
