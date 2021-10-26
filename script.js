@@ -9,12 +9,21 @@ const Player = name => {
 
 const Cell = (value, element) => {
     
-    const setValue = (token) => {
+    const initialize = () => {
+        element.innerHTML = value;
+
+        element.addEventListener("click", function(event) {
+            changeValue("X")
+        })
+    };
+
+    const changeValue = (token) => {
         value = token;
         element.innerHTML = token
     };
 
-    return { setValue, value }
+    initialize();
+    return { changeValue, value }
 }
 
 const gameBoard = (() => {
@@ -39,17 +48,15 @@ const gameBoard = (() => {
  
 
                 // Create a cell element and append it to the html row element
-                let cell = document.createElement("div");
-                // Create a cell at the coordinate in the board array
-                board[i][j] = Cell("X", cell);
-                cell.classList.add("cell");
-                cell.innerHTML = board[i][j].value; 
+                let cell = document.createElement("button");
+                cell.classList.add("cell-container");
                 row.appendChild(cell);
+                // Create a cell at the coordinate in the board array
+                board[i][j] = Cell(" ", cell);
+            };
+        };
 
-            }
-        }
     };
-
     return { initializeBoard }
 })();
 
