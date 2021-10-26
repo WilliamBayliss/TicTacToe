@@ -11,7 +11,7 @@ const gameBoard = (() => {
         for (let i = 0; i < board.length; i++) {
             subArray = board[i]
             for (let j = 0;  j < subArray.length; j++) {
-                console.log(board[i][j])
+                console.log(board[i][j]);
             }
         }
     };
