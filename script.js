@@ -48,7 +48,6 @@ const gameBoard = (() => {
 
             }
         }
-        return board
     };
 
     return { initializeBoard }
