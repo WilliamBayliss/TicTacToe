@@ -9,9 +9,29 @@
         <div class="content">
             <h1>Tic Tac Toe!</h1>            
             <div class="container">
+
+                <div id="game-setup">
+                    <div class="button-container">
+                        <h5>Select your Token:</h5>
+                        
+                        <div>
+                        <label for="X">X:</label>
+                        <input type="radio" name="token" id="X" value="X" checked>
+                        </div>
+
+                        <div>
+                        <label for="O">O:</label>
+                        <input type="radio" name="token" id="O" value="O">
+                        </div>
+                            
+                    </div>
+                    <div class="button-container">
+                        <button class="button" id="start-game-button">Start Game</button>
+                    </div>
+
+                </div>
             
-                <div id="game-board">
-                    
+                <div id="game-board" class="hidden">
                 </div>
             </div>
 
