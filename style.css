@@ -13,14 +13,37 @@
     display: flex;
 }
 
-.cell-container {
+.cell{
     border: 1px solid black;
     width: 50px;
     height: 50px;
     padding: 50px;
 }
 
+.x-cell {
+    background-color: red;
+    color: white;
+}
+
+.o-cell {
+    background-color: blue;
+    color: white;
+}
+
+.button-container {
+    margin: 10px;
+}
+
+.button {
+    padding: 30px;
+    font-size: large;
+}
+
 #game-board {
     margin-top: 25px;
+}
+
+.hidden {
+    display: none;
 }
 
