@@ -9,59 +9,25 @@ const Player = (token) => {
 };
 
 const Cell = (value, element) => {
-    
     const initialize = () => {
         element.innerHTML = value;
 
     };
 
     const changeValue = (token) => {
-        value = token;
         element.innerHTML = token
+        element.boardCell.value = token;
     };
 
     initialize();
-    return { changeValue, value }
+    return { changeValue, value, element }
 }
 
-const gameBoard = (() => {
-
-    const initializeBoard = () => {
-        var board = [
-            [],
-            [],
-            [],
-
-        ];
-        // Select the div for the board display
-        boardDisplay = document.getElementById("game-board")
-        // For each "row":
-        for (let i = 0; i <= 2; i++) {
-            // Create a row and append it to the board display
-            let row = document.createElement("div");
-            row.classList.add("row");
-            boardDisplay.appendChild(row);
-            // For each "cell":
-            for (let j = 0; j <= 2; j++) {
- 
-
-                // Create a cell element and append it to the html row element
-                let cell = document.createElement("button");
-                cell.classList.add("cell-container");
-                row.appendChild(cell);
-                // Create a cell at the coordinate in the board array
-                board[i][j] = Cell(null, cell);
-            };
-        };
-        return board;
-    };
-
-    var board = initializeBoard();
-
+const Board = () => {
     // Helper functions to assess board state
     // 
     // Gets an array of vertical cells from the board
-    const getColumnFromBoard = (index) => {
+    const getColumnFromBoard = (board, index) => {
         column = [board[0][index], board[1][index], board[2][index]]
         return column;
     };
@@ -73,7 +39,7 @@ const gameBoard = (() => {
 
     // Iterates over the board and counts the number of squares marked X, O, and left empty.
     // Returns an array of the three counts
-    const countBoardTokens = () => {
+    const countBoardTokens = (board) => {
         let xCount = 0;
         let oCount = 0;
         let nullCount = 0;
@@ -94,8 +60,9 @@ const gameBoard = (() => {
     };
 
     // Gets the token counts to assess whose turn it is
-    const getPlayerTurn = () => {
-        tokenCount = countBoardTokens;
+    const getPlayerTurn = (board) => {
+        tokenCount = countBoardTokens(board);
+        console.log(tokenCount)
         // if all 9 squares are empty it is player X turn
         if (tokenCount[2] == 9) {
             return "X";
@@ -111,8 +78,47 @@ const gameBoard = (() => {
     };
 
 
-    return { initializeBoard }
-})();
+    const initializeBoard = () => {
+        var board = [
+            [],
+            [],
+            [],
+
+        ];
+        // Select the div for the board display
+        boardDisplay = document.getElementById("game-board");
+
+        for (let i = 0; i <= 2; i++) {
+            // Create a row and append it to the board display
+            let row = document.createElement("div");
+            row.classList.add("row");
+            boardDisplay.appendChild(row);
+            for (let j = 0; j <= 2; j++) {
+                // Create a cell HTML element and append it to the html row element
+                let cell = document.createElement("button");
+                cell.classList.add("cell-container");
+                // Create a cell at the coordinate in the board array
+                board[i][j] = Cell(null, cell);
+                // Associate the board array cell with the HTML object
+                cell.boardCell = board[i][j];
+                row.appendChild(cell);
+                cell.addEventListener('click', function(event) {
+                    token = getPlayerTurn(board);
+                    cell.boardCell.changeValue(token);
+                })
+            };
+        };
+
+        return board;
+    };
+    
+    return { getPlayerTurn, initializeBoard }
+
+    
+};
+
+let board = Board();
+board.initializeBoard();
 
 
 
