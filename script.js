@@ -14,7 +14,9 @@ const Player = (token) => {
 };
 
 const ComputerPlayer = (token) => {
+    const {placeToken} = Player(token);
 
+    return {placeToken}
 };
 
 const Cell = (value, element=null) => {
@@ -52,7 +54,15 @@ const Board = (player) => {
     const addCellClickEvents = () => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.addEventListener('click', event => {
-                player.placeToken(cell.cell);
+                if (cell.cell.value == null) {
+                    player.placeToken(cell.cell);
+                    if (cell.cell.value == "X") {
+                        cell.classList.add('x-cell');
+                    }
+                    else if (cell.cell.value == "O") {
+                        cell.classList.add('o-cell');
+                    }
+                }
             })
         })
     }
