@@ -55,6 +55,7 @@ const Board = (player) => {
         while (gameBoardContainer.firstChild) {
             gameBoardContainer.removeChild(gameBoardContainer.lastChild);
         };
+        populateBoard();
     };
 
     const addCellClickEvents = () => {
