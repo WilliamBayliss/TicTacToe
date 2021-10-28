@@ -1,4 +1,5 @@
 startButton = document.getElementById('start-game-button');
+resetButton = document.getElementById('reset-button');
 gameSetupContainer = document.getElementById('game-setup');
 gameBoardContainer = document.getElementById('game-board');
 
@@ -19,7 +20,8 @@ const ComputerPlayer = (token) => {
     return {placeToken}
 };
 
-const Cell = (value, element=null) => {
+const Cell = (value, element) => {
+
 
     return { value, element }
 };
@@ -37,36 +39,31 @@ const Board = (player) => {
             row.classList.add('row');
             gameBoardContainer.appendChild(row);
             for (let j = 0; j <= 2; j++) {
-                // Add 3 cells to each empty array on the board
-                emptyArray.push(Cell(null))
                 // Create three cell elements and append them to the row on the game board
                 cell = document.createElement('button');
                 cell.classList.add('cell');
                 row.appendChild(cell);
 
-                // Associate the two objects
-                cell.cell = board[i][j];
-                cell.cell.element = cell;
+                // Add 3 cells to each empty array on the board
+                emptyArray.push(Cell(null, cell))
+                // Associate 
+                cell.source = board[i][j];
             };
         };
     };
 
-    const resetBoard = () => {
-        while (gameBoardContainer.firstChild) {
-            gameBoardContainer.removeChild(gameBoardContainer.lastChild);
-        };
-        populateBoard();
-    };
 
     const addCellClickEvents = () => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.addEventListener('click', event => {
-                if (cell.cell.value == null) {
-                    player.placeToken(cell.cell);
-                    if (cell.cell.value == "X") {
+                if (cell.source.value == null) {
+                    player.placeToken(cell.source);
+                    if (cell.source.value == "X") {
+                        console.log("X")
                         cell.classList.add('x-cell');
                     }
-                    else if (cell.cell.value == "O") {
+                    else if (cell.source.value == "O") {
+                        console.log("O")
                         cell.classList.add('o-cell');
                     }
                 }
@@ -74,19 +71,33 @@ const Board = (player) => {
         })
     }
 
+
+    const resetBoard = (board) => {
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.source.value = null;
+            cell.innerHTML = "";
+            if (cell.classList.contains('o-cell')) {
+                cell.classList.remove('o-cell');
+            };
+            if (cell.classList.contains('x-cell')) {
+                cell.classList.remove('x-cell');
+            };
+        })
+    };
+
     const countTokens = (board) => {
         xCount = 0;
         oCount = 0;
         nullCount = 0;
-        document.querySelectorAll('cell').forEach(cell => {
-            console.log(cell.cell)
-            if (cell.cell.value == null) {
+        document.querySelectorAll('.cell').forEach(cell => {
+            console.log(cell.source)
+            if (cell.source.value == null) {
                 nullCount++;
             }
-            else if (cell.cell.value == "O") {
+            else if (cell.source.value == "O") {
                 oCount++;
             }
-            else if (cell.cell.value == "X") {
+            else if (cell.source.value == "X") {
                 xCount++;
             }
         })
@@ -109,7 +120,7 @@ const Board = (player) => {
 
     initializeBoard();
 
-    return {getPlayerTurn, countTokens}
+    return {getPlayerTurn, countTokens, resetBoard}
 };
 
 
@@ -117,7 +128,7 @@ function startGame() {
     let token = document.querySelector('input[name="token"]:checked').value
     gameSetupContainer.classList.add('hidden');
     gameBoardContainer.classList.toggle('hidden');
-
+    resetButton.classList.toggle('hidden')
     // Create player with selected token
     var player = Player(token);
     // Create computer player with token depending on player selection
@@ -130,7 +141,9 @@ function startGame() {
 
     // Create game board
     var board = Board(player);
-    board.countTokens(board);
+    resetButton.addEventListener('click', event => {
+        board.resetBoard(board);
+    })
 };
 
 startButton.addEventListener('click', function(event) {
