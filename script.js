@@ -59,11 +59,9 @@ const Board = (player) => {
                 if (cell.source.value == null) {
                     player.placeToken(cell.source);
                     if (cell.source.value == "X") {
-                        console.log("X")
                         cell.classList.add('x-cell');
                     }
                     else if (cell.source.value == "O") {
-                        console.log("O")
                         cell.classList.add('o-cell');
                     }
                 }
@@ -90,7 +88,6 @@ const Board = (player) => {
         oCount = 0;
         nullCount = 0;
         document.querySelectorAll('.cell').forEach(cell => {
-            console.log(cell.source)
             if (cell.source.value == null) {
                 nullCount++;
             }
@@ -106,7 +103,15 @@ const Board = (player) => {
 
     const getPlayerTurn = (board) => {
         tokenCounts = countTokens(board);
-        console.log(tokenCounts)
+        if (tokenCounts[2] == 9) {
+            return "X";
+        }
+        else if (tokenCounts[0] == tokenCounts[1]) {
+            return "X";
+        }
+        else if (tokenCounts[0] > tokenCounts[1]) {
+            return "O"
+        }
     }
 
     const initializeBoard = () => {
