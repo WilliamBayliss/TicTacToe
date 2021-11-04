@@ -68,7 +68,9 @@ const Board = (player) => {
                         cell.classList.add('o-cell');
                     }
                 }
-                console.log(diagonalLine(board));
+                if (winCondition(board)) {
+                    winState();
+                }
             })
         })
     }
@@ -120,6 +122,7 @@ const Board = (player) => {
         }
     }
 
+    // Helper functions for assessing win condition
     const allEqual = (array) => {
         if (array.includes(null)) {
             return false;
@@ -160,6 +163,7 @@ const Board = (player) => {
         return false;
     }
     
+    // Uses helper functions to assess if any vertical, horizontal or diagonal line on the board has equal, non-null values
     const winCondition = (board) => {
         if (horizonalLine(board)) {
             return true;
@@ -170,6 +174,10 @@ const Board = (player) => {
         } else {
             return false
         }
+    }
+
+    const winState = () => {
+        console.log("Game over!")
     }
 
     // Creates the board and populates it with cells, adds on click events to cells and returns board
