@@ -68,7 +68,7 @@ const Board = (player) => {
                         cell.classList.add('o-cell');
                     }
                 }
-                console.log(verticalLine(board));
+                console.log(diagonalLine(board));
             })
         })
     }
@@ -141,6 +141,23 @@ const Board = (player) => {
             line = [board[0][i].value, board[1][i].value, board[2][i].value];
             return allEqual(line);
         }
+    }
+
+    const downRightDiagonalLine = (board) => {
+        line = [board[0][0].value, board[1][1].value, board[2][2].value];
+        return allEqual(line);
+    }
+
+    const upRightDiagonalLine = (board) => {
+        line = [board[2][0].value, board[1][1].value, board[0][2].value]
+        return allEqual(line);
+    }
+
+    const diagonalLine = (board) => {
+        if ((upRightDiagonalLine(board)) || (downRightDiagonalLine(board))) {
+            return true;
+        }    
+        return false;
     }
     
     const winCondition = (board) => {
