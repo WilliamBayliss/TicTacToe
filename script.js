@@ -22,6 +22,7 @@ const Cell = (value, element) => {
 
 const Board = (player) => {    
 
+    // Creates board window and array and associates elements
     const populateBoard = (board) => {
         for (let i = 0; i <= 2; i++) {
             // Create an empty array and add it to the board
@@ -46,14 +47,15 @@ const Board = (player) => {
         };
     };
 
+    // Modifies a cell on the board
     const placeToken = (cell) => {
         token = getPlayerTurn();
         cell.source.value = token;
         cell.innerHTML = token;
-        console.log(countTokens());
-        console.log(getPlayerTurn());
     }
 
+    // Gets all cell elements from window and adds on click event to each
+    // Where cell values are modified depending on player turn value
     const addCellClickEvents = () => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.addEventListener('click', event => {
@@ -70,7 +72,7 @@ const Board = (player) => {
         })
     }
 
-
+    // Resets the board to initial state
     const resetBoard = (board) => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.source.value = null;
@@ -84,6 +86,7 @@ const Board = (player) => {
         })
     };
 
+    // Returns an array of cell value counts in the form [X, O, EMPTY]
     const countTokens = () => {
         xCount = 0;
         oCount = 0;
@@ -102,6 +105,7 @@ const Board = (player) => {
         return [xCount, oCount, nullCount];
     }
 
+    // Uses the cell counts to determine whose turn it is and returns that value
     const getPlayerTurn = (board) => {
         tokenCounts = countTokens(board);
         if (tokenCounts[2] == 9) {
@@ -115,6 +119,7 @@ const Board = (player) => {
         }
     }
 
+    // Creates the board and populates it with cells, adds on click events to cells and returns board
     const initializeBoard = () => {
         var board = [];
         populateBoard(board);
@@ -126,7 +131,7 @@ const Board = (player) => {
 
     initializeBoard();
 
-    return {getPlayerTurn, countTokens, resetBoard}
+    return { getPlayerTurn, countTokens, resetBoard }
 };
 
 
