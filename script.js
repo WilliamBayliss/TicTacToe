@@ -6,22 +6,16 @@ gameBoardContainer = document.getElementById('game-board');
 
 const Player = (token) => {
 
-    const placeToken = (cell) => {
-        cell.value = token;
-        cell.element.innerHTML = token
-    }
 
-    return { placeToken }
+    return { token }
 };
 
 const ComputerPlayer = (token) => {
-    const {placeToken} = Player(token);
 
-    return {placeToken}
+    return { token }
 };
 
 const Cell = (value, element) => {
-
 
     return { value, element }
 };
@@ -52,12 +46,19 @@ const Board = (player) => {
         };
     };
 
+    const placeToken = (cell) => {
+        token = getPlayerTurn();
+        cell.source.value = token;
+        cell.innerHTML = token;
+        console.log(countTokens());
+        console.log(getPlayerTurn());
+    }
 
     const addCellClickEvents = () => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.addEventListener('click', event => {
                 if (cell.source.value == null) {
-                    player.placeToken(cell.source);
+                    placeToken(cell);
                     if (cell.source.value == "X") {
                         cell.classList.add('x-cell');
                     }
@@ -83,7 +84,7 @@ const Board = (player) => {
         })
     };
 
-    const countTokens = (board) => {
+    const countTokens = () => {
         xCount = 0;
         oCount = 0;
         nullCount = 0;
@@ -149,6 +150,7 @@ function startGame() {
     resetButton.addEventListener('click', event => {
         board.resetBoard(board);
     })
+    
 };
 
 startButton.addEventListener('click', function(event) {
