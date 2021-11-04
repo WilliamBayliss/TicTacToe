@@ -68,7 +68,7 @@ const Board = (player) => {
                         cell.classList.add('o-cell');
                     }
                 }
-                console.log(horizonalLine(board));
+                console.log(verticalLine(board));
             })
         })
     }
@@ -120,18 +120,27 @@ const Board = (player) => {
         }
     }
 
-    const allEqual = (array) => array.every(cell => cell.value == array[0].value);
+    const allEqual = (array) => {
+        if (array.includes(null)) {
+            return false;
+        }
+        else {
+            return array.every(value => value == array[0]); 
+        }
+    }
 
     const horizonalLine = (board) => {
         for (let i = 0; i < board.length; i++) {
-            line = [board[i][0].value, board[i][1].value, board[i][2].value]
-            if ( (line[0] !== null) && allEqual(line) ) {
-                return true;
-            }
-
+            line = [board[i][0].value, board[i][1].value, board[i][2].value];
+            return allEqual(line);
         }
+    }
 
-        return false;
+    const verticalLine = (board) => {
+        for (let i = 0; i < board.length; i++) {
+            line = [board[0][i].value, board[1][i].value, board[2][i].value];
+            return allEqual(line);
+        }
     }
     
     const winCondition = (board) => {
