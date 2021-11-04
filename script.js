@@ -56,7 +56,7 @@ const Board = (player) => {
 
     // Gets all cell elements from window and adds on click event to each
     // Where cell values are modified depending on player turn value
-    const addCellClickEvents = () => {
+    const addCellClickEvents = (board) => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.addEventListener('click', event => {
                 if (cell.source.value == null) {
@@ -68,6 +68,7 @@ const Board = (player) => {
                         cell.classList.add('o-cell');
                     }
                 }
+                console.log(horizonalLine(board));
             })
         })
     }
@@ -119,11 +120,37 @@ const Board = (player) => {
         }
     }
 
+    const allEqual = (array) => array.every(cell => cell.value == array[0].value);
+
+    const horizonalLine = (board) => {
+        for (let i = 0; i < board.length; i++) {
+            line = [board[i][0].value, board[i][1].value, board[i][2].value]
+            if ( (line[0] !== null) && allEqual(line) ) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+    
+    const winCondition = (board) => {
+        if (horizonalLine(board)) {
+            return true;
+        } else if (verticalLine(board)) {
+            return true;
+        } else if (diagonalLine(board)) {
+            return true;
+        } else {
+            return false
+        }
+    }
+
     // Creates the board and populates it with cells, adds on click events to cells and returns board
     const initializeBoard = () => {
         var board = [];
         populateBoard(board);
-        addCellClickEvents();
+        addCellClickEvents(board);
 
 
         return board;
