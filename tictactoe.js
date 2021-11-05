@@ -135,15 +135,21 @@ const Board = (player) => {
     const horizonalLine = (board) => {
         for (let i = 0; i < board.length; i++) {
             line = [board[i][0].value, board[i][1].value, board[i][2].value];
-            return allEqual(line);
+            if (allEqual(line)) {
+                return true;
+            }
         }
+        return false;
     }
 
     const verticalLine = (board) => {
         for (let i = 0; i < board.length; i++) {
             line = [board[0][i].value, board[1][i].value, board[2][i].value];
-            return allEqual(line);
+            if (allEqual(line)) {
+                return true;
+            }
         }
+        return false;
     }
 
     const downRightDiagonalLine = (board) => {
@@ -177,7 +183,7 @@ const Board = (player) => {
     }
 
     const winState = () => {
-        console.log("Game over!")
+        console.log("Game over!");
     }
 
     // Creates the board and populates it with cells, adds on click events to cells and returns board
