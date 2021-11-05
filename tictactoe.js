@@ -187,6 +187,16 @@ const Board = (player) => {
         document.querySelectorAll('.cell').forEach(cell => {
             cell.removeEventListener('click', cell.event);
         })
+        winner = getWinner();
+    }
+
+    const getWinner = () => {
+        player = getPlayerTurn();
+        if (player == "X") {
+            return "O"
+        } else if (player == "O") {
+            return "X"
+        }
     }
 
     // Creates the board and populates it with cells, adds on click events to cells and returns board
