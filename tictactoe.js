@@ -58,7 +58,7 @@ const Board = (player) => {
     // Where cell values are modified depending on player turn value
     const addCellClickEvents = (board) => {
         document.querySelectorAll('.cell').forEach(cell => {
-            cell.addEventListener('click', event => {
+            cell.addEventListener('click', cell.event = function onClick() {
                 if (cell.source.value == null) {
                     placeToken(cell);
                     if (cell.source.value == "X") {
@@ -184,6 +184,9 @@ const Board = (player) => {
 
     const winState = () => {
         gameBoardContainer.classList.add('win-state');
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.removeEventListener('click', cell.event);
+        })
     }
 
     // Creates the board and populates it with cells, adds on click events to cells and returns board
