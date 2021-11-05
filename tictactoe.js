@@ -183,7 +183,7 @@ const Board = (player) => {
     }
 
     const winState = () => {
-        console.log("Game over!");
+        gameBoardContainer.classList.add('win-state');
     }
 
     // Creates the board and populates it with cells, adds on click events to cells and returns board

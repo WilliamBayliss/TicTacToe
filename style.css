@@ -52,3 +52,6 @@
     display: none;
 }
 
+.win-state {
+    opacity: 0.3;
+}
