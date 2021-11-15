@@ -38,7 +38,4 @@ const board = () => {
     const initializeBoard = () => {
         board = initialState;
     }
-
-    initializeBoard();
-    createWindow(board);
 }
