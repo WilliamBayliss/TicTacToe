@@ -79,8 +79,31 @@ const Board = () => {
         }
     }
 
+    const currentPlayer = () => {
+        if (allEmptyCheck()) {
+            return X;
+        }
+        else {
+            let cells = Array.from(document.querySelectorAll('.cell'))
+            let xCount = 0;
+            let oCount = 0;
+            cells.forEach(cell => {
+                if (cell.value == X) {
+                    xCount++;
+                } else if (cell.value == O) {
+                    oCount++;
+                }
+            })
+            if (xCount > oCount) {
+                return O;
+            } else if (xCount == oCount) {
+                return X;
+            }
+        }
+    }
+
     createBoard();
-    console.log(diagonalScan());
+    console.log(currentPlayer());
 }
 
 const tictactoe = (() => {
