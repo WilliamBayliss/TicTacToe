@@ -86,13 +86,13 @@ const Board = () => {
     }
 
     const winCondition = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'))
         if ( (rowScan()) || (colScan(cells)) || (diagonalScan(cells)) ) {
             return true
         }
     }
 
     const terminalBoardState = () => {
-        let cells = Array.from(document.querySelectorAll('.cell'))
         if (winCondition()) {
             return true;    // If win condition, true
         } else if (anyEmptyCheck()){
