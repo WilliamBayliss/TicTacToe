@@ -85,17 +85,20 @@ const Board = () => {
         }
     }
 
-    const terminalBoardState = () => {
-        let cells = Array.from(document.querySelectorAll('.cell'))
-        // If win condition, true
+    const winCondition = () => {
         if ( (rowScan()) || (colScan(cells)) || (diagonalScan(cells)) ) {
             return true
-        // If no win condition and empty cells, false
+        }
+    }
+
+    const terminalBoardState = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'))
+        if (winCondition()) {
+            return true;    // If win condition, true
         } else if (anyEmptyCheck()){
-            return false
-        // If no win condition and no empty cells, true
+            return false;   // If no win condition and empty cells, false
         } else {
-            return true;
+            return true;    // If no win condition and no empty cells, true
         }
     }
 
