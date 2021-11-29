@@ -32,6 +32,12 @@ const Board = () => {
         
     }
 
+    const anyEmptyCheck = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'))
+        return cells.every(cell => cell.value !== EMPTY)
+        
+    }
+
     const winningArray = (cells) => {
         if (cells[0].value !== EMPTY) {
             return cells.every(cell => cell.value === cells[0].value)
@@ -51,7 +57,7 @@ const Board = () => {
         return false;
     }
 
-    const colScan = () => {
+    const colScan = (cells) => {
         let cells = Array.from(document.querySelectorAll('.cell'))
         for (let i = 0; i< 3; i++) {
             let column = []
@@ -67,7 +73,7 @@ const Board = () => {
         return false;
     }
 
-    const diagonalScan = () => {
+    const diagonalScan = (cells) => {
         let cells = Array.from(document.querySelectorAll('.cell'))
         let diagonalOne = [cells[0], cells[4], cells[8]]
         let diagonalTwo = [cells[2], cells[4], cells[6]]
@@ -76,6 +82,20 @@ const Board = () => {
             return true
         } else {
             return false
+        }
+    }
+
+    const terminalBoardState = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'))
+        // If win condition, true
+        if ( (rowScan()) || (colScan(cells)) || (diagonalScan(cells)) ) {
+            return true
+        // If no win condition and empty cells, false
+        } else if (anyEmptyCheck()){
+            return false
+        // If no win condition and no empty cells, true
+        } else {
+            return true;
         }
     }
 
