@@ -24,14 +24,18 @@ const ComputerPlayer = (token) => {
 
     const randomMove = () => {
         let cell = getCell();
-        cell.dataset.value = token;
-        cell.innerHTML = token;
-        
-        if (token == X) {
-            cell.classList.add('x-cell');
-        } else if (token == O) {
-            cell.classList.add('o-cell');
-        };
+        if (cell == null) {
+            return;
+        } else {
+            cell.dataset.value = token;
+            cell.innerHTML = token;
+            
+            if (token == X) {
+                cell.classList.add('x-cell');
+            } else if (token == O) {
+                cell.classList.add('o-cell');
+            };
+        }
     }
 
     return { randomMove, token }
@@ -131,18 +135,21 @@ const Board = (player, cpu) => {
         };
     };
 
-    const terminalBoardState = () => {
-        if (winCondition()) {
-            console.log('win')
-            return true;    // If win condition, true
-        } else if (!anyEmptyCheck()){
-            console.log('no win, full board')
-            return true;   // If no win condition and no empty cells, true
+    const fullBoard = () => {
+        if (anyEmptyCheck()){
+            return false;   // If empty cells, false
         } else {
-            console.log('no win, empty cells')
-            return false;    // If no win condition and empty cells, false
+            return true;    // If no empty cells, true
         };
     };
+
+    const terminalBoard = () => {
+        if (winCondition() || fullBoard()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const currentPlayer = () => {
         if (initialBoardState()) {
@@ -168,24 +175,30 @@ const Board = (player, cpu) => {
     };
 
     const setCellOnClicks = () => {
-        let cells = Array.from(document.querySelectorAll('.cell'))
+        let cells = Array.from(document.querySelectorAll('.cell'));
         cells.forEach(cell => {
             cell.addEventListener('click', event => {
                 if (cell.dataset.value == "null") {
                     modifyCellValue(cell);
-                    cpu.randomMove();
+                    setTimeout(() => { cpu.randomMove(); }, 500);
                 }
 
             });
         });
     };
 
+    const winState = () => {
+
+    }
+
     createBoard();
     setCellOnClicks();
-    return { currentPlayer, terminalBoardState }
 }
 
 const tictactoe = (() => {
+    let setupDisplay = document.getElementById('game-setup');
+    let boardDisplay = document.getElementById('game-board');
+    
 
     document.getElementById('start-button').addEventListener('click', event => {
         let token = document.querySelector('input[name="token"]:checked').value;
@@ -196,13 +209,15 @@ const tictactoe = (() => {
         }
         let player = Player(token);
         let cpu = ComputerPlayer(cpuToken);
-        document.getElementById('game-setup').classList.add('hidden');
-        document.getElementById('game-board').classList.remove('hidden');
+        setupDisplay.classList.add('hidden');
+        boardDisplay.classList.remove('hidden');
     
         let board = Board(player, cpu);
         if (cpu.token == X) {
             cpu.randomMove();
         }
+
+
 
     });
 
