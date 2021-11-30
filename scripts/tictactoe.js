@@ -4,7 +4,15 @@ const Player = (token) => {
 }
 
 const ComputerPlayer = () => {
+    const getBoardFromWindow = () => {
+        let board = [[], [], []]
+        let cells = Array.from(document.querySelectorAll('.cell'))
+        cells.forEach(cell => {
+            board[cell.coordinate[0]][cell.coordinate[1]] = cell.value
+        })
 
+        return board
+    }
 }
 
 const Board = () => {
@@ -152,6 +160,7 @@ const Board = () => {
 }
 
 const tictactoe = (() => {
+
     document.getElementById('start-button').addEventListener('click', event => {
         let token = document.querySelector('input[name="token"]').value;
         let player = Player(token);
@@ -159,6 +168,7 @@ const tictactoe = (() => {
         document.getElementById('game-board').classList.remove('hidden');
     
         let board = Board();
+        let cpu = ComputerPlayer();
     })
 
 })();
