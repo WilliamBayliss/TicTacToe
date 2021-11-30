@@ -62,7 +62,6 @@ const Board = () => {
     }
 
     const colScan = (cells) => {
-        let cells = Array.from(document.querySelectorAll('.cell'))
         for (let i = 0; i< 3; i++) {
             let column = []
             cells.forEach(cell => {
@@ -78,7 +77,6 @@ const Board = () => {
     }
 
     const diagonalScan = (cells) => {
-        let cells = Array.from(document.querySelectorAll('.cell'))
         let diagonalOne = [cells[0], cells[4], cells[8]]
         let diagonalTwo = [cells[2], cells[4], cells[6]]
 
