@@ -4,7 +4,7 @@ const Player = (token) => {
 }
 
 const ComputerPlayer = () => {
-    
+
 }
 
 const Board = () => {
@@ -30,7 +30,7 @@ const Board = () => {
         }
     }
 
-    const allEmptyCheck = () => {
+    const initialBoardState = () => {
         let cells = Array.from(document.querySelectorAll('.cell'))
         return cells.every(cell => cell.value == EMPTY)
         
@@ -107,7 +107,7 @@ const Board = () => {
     }
 
     const currentPlayer = () => {
-        if (allEmptyCheck()) {
+        if (initialBoardState()) {
             return X;
         }
         else {
