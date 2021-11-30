@@ -3,6 +3,10 @@ const Player = (token) => {
     return { token }
 }
 
+const ComputerPlayer = () => {
+    
+}
+
 const Board = () => {
     const X = "X";
     const O = "O"
