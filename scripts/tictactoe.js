@@ -1,24 +1,43 @@
-const Player = (token) => {
+const X = "X";
+const O = "O"
+const EMPTY = "null";
 
+const Player = (token) => {
     return { token }
 }
 
-const ComputerPlayer = () => {
+const ComputerPlayer = (token) => {
     const getBoardFromWindow = () => {
         let board = [[], [], []]
         let cells = Array.from(document.querySelectorAll('.cell'))
         cells.forEach(cell => {
-            board[cell.coordinate[0]][cell.coordinate[1]] = cell.value
+            board[cell.dataset.coordinate[0]][cell.dataset.coordinate[1]] = cell.dataset.value
         })
 
         return board
     }
+    const getCell = () => {
+        let cells = Array.from(document.querySelectorAll('.cell[data-value="null"]'))
+        let cell = cells[Math.floor(Math.random() * cells.length)]
+        return cell
+    }
+
+    const randomMove = () => {
+        let cell = getCell();
+        cell.dataset.value = token;
+        cell.innerHTML = token;
+        
+        if (token == X) {
+            cell.classList.add('x-cell');
+        } else if (token == O) {
+            cell.classList.add('o-cell');
+        };
+    }
+
+    return { randomMove, token }
 }
 
-const Board = () => {
-    const X = "X";
-    const O = "O"
-    const EMPTY = null;
+const Board = (player, cpu) => {
 
     const createBoard = () => {
         let gameBoard = document.getElementById('game-board');
@@ -31,38 +50,38 @@ const Board = () => {
                 cell.classList.add('cell');
                 row.appendChild(cell);
 
-                cell.value = EMPTY;
-                cell.coordinate = [i, j]
+                cell.dataset.value = EMPTY;
+                cell.dataset.coordinate = [i, j]
 
             };
         };
     };
 
-    const modifyCellValue = (cell, token) => {
-        cell.value = token
-        cell.innerHTML = token
-        if (cell.value == X) {
-            cell.classList.add('x-cell');
-        } else if (cell.value == O) {
-            cell.classList.add('o-cell');
-        };
+    const modifyCellValue = (cell) => {
+            cell.dataset.value = player.token
+            cell.innerHTML = player.token
+            if (cell.dataset.value == X) {
+                cell.classList.add('x-cell');
+            } else if (cell.dataset.value == O) {
+                cell.classList.add('o-cell');
+            };
     };
 
     const initialBoardState = () => {
         let cells = Array.from(document.querySelectorAll('.cell'));
-        return cells.every(cell => cell.value == EMPTY);
+        return cells.every(cell => cell.dataset.value == EMPTY);
         
     };
 
     const anyEmptyCheck = () => {
         let cells = Array.from(document.querySelectorAll('.cell'));
-        return cells.every(cell => cell.value !== EMPTY);
+        return cells.some(cell => cell.dataset.value == EMPTY);
         
     };
 
     const winningArray = (cells) => {
         if (cells[0].value !== EMPTY) {
-            return cells.every(cell => cell.value === cells[0].value);
+            return cells.every(cell => cell.dataset.value === cells[0].value);
         } else {
             return false;
         };
@@ -83,7 +102,7 @@ const Board = () => {
         for (let i = 0; i< 3; i++) {
             let column = [];
             cells.forEach(cell => {
-                if (cell.coordinate[1] == i) {
+                if (cell.dataset.coordinate[2] == i) {
                     column.push(cell);
                 };
             });
@@ -114,11 +133,14 @@ const Board = () => {
 
     const terminalBoardState = () => {
         if (winCondition()) {
+            console.log('win')
             return true;    // If win condition, true
-        } else if (anyEmptyCheck()){
-            return false;   // If no win condition and empty cells, false
+        } else if (!anyEmptyCheck()){
+            console.log('no win, full board')
+            return true;   // If no win condition and no empty cells, true
         } else {
-            return true;    // If no win condition and no empty cells, true
+            console.log('no win, empty cells')
+            return false;    // If no win condition and empty cells, false
         };
     };
 
@@ -131,9 +153,9 @@ const Board = () => {
             let xCount = 0;
             let oCount = 0;
             cells.forEach(cell => {
-                if (cell.value == X) {
+                if (cell.dataset.value == X) {
                     xCount++;
-                } else if (cell.value == O) {
+                } else if (cell.dataset.value == O) {
                     oCount++;
                 };
             });
@@ -149,7 +171,10 @@ const Board = () => {
         let cells = Array.from(document.querySelectorAll('.cell'))
         cells.forEach(cell => {
             cell.addEventListener('click', event => {
-                modifyCellValue(cell, currentPlayer());
+                if (cell.dataset.value == "null") {
+                    modifyCellValue(cell);
+                    cpu.randomMove();
+                }
 
             });
         });
@@ -157,18 +182,28 @@ const Board = () => {
 
     createBoard();
     setCellOnClicks();
+    return { currentPlayer, terminalBoardState }
 }
 
 const tictactoe = (() => {
 
     document.getElementById('start-button').addEventListener('click', event => {
-        let token = document.querySelector('input[name="token"]').value;
+        let token = document.querySelector('input[name="token"]:checked').value;
+        if (token == X) {
+            var cpuToken = O;
+        } else if (token == O) {
+            var cpuToken = X;
+        }
         let player = Player(token);
+        let cpu = ComputerPlayer(cpuToken);
         document.getElementById('game-setup').classList.add('hidden');
         document.getElementById('game-board').classList.remove('hidden');
     
-        let board = Board();
-        let cpu = ComputerPlayer();
-    })
+        let board = Board(player, cpu);
+        if (cpu.token == X) {
+            cpu.randomMove();
+        }
+
+    });
 
 })();
