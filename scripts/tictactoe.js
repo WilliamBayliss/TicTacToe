@@ -192,31 +192,43 @@ const Board = (player, cpu) => {
                     }
                     // Perform CPU move if board not terminal
                     if (!terminalBoard()) {
-
                         setTimeout(() => { cpu.randomMove(); }, 100);
                         // Check for win condition after move and activate win state if true
                         winCheck();
                     }
-                    
                 }
             });
         });
     };
 
-    const endGame = () => {
-        let cells = Array.from(document.querySelectorAll('.cell'));
-        cells.forEach(cell => {
-            cell.removeEventListener('click', cellClick());
-        })
-    }
+    // Reset the value, innerHTML and CSS classes of every cell on the board
+    const newGame = () => {
+        let gameBoard = document.getElementById('game-board')    
+        gameBoard.classList.remove('win-state');
+        while (gameBoard.firstChild) {
+            gameBoard.removeChild(gameBoard.firstChild)
+        }
+        createBoard();
+        let token = document.querySelector('input[name="token"]:checked').value;
+        player = Player(token);
+        if (token == X) {
+            cpu = ComputerPlayer(O);
+        } else if (token == O) {
+            cpu = ComputerPlayer(X);
+        };
+        gameRound();
+    };
 
     const winState = () => {
         document.getElementById('game-board').classList.add('win-state');
         document.getElementById('title').innerHTML = "Game Over!";
         document.getElementById('start-button').innerHTML = "Play Again";
         document.getElementById('game-setup').classList.remove('hidden');
-        endGame();
-    }
+        document.getElementById('start-button').addEventListener('click', startNewGame = () => {
+            newGame();
+        });
+
+    };
 
     createBoard();
     gameRound();
@@ -235,6 +247,7 @@ const tictactoe = (() => {
         } else if (token == O) {
             var cpuToken = X;
         }
+        console.log(token)
         let player = Player(token);
         let cpu = ComputerPlayer(cpuToken);
         setupDisplay.classList.add('hidden');
