@@ -84,32 +84,27 @@ const Board = (player, cpu) => {
     };
 
     const winningArray = (cells) => {
-        if (cells[0].value !== EMPTY) {
-            return cells.every(cell => cell.dataset.value === cells[0].value);
-        } else {
+        if (cells.some(cell => cell.dataset.value == EMPTY)) {
             return false;
+        } else {
+            return cells.every(cell => cell.dataset.value == cells[0].dataset.value);
         };
     };
 
     const rowScan = () => {
-        let rows = Array.from(document.querySelectorAll('.row'));
-        for (let i = 0; i < rows.length; i++) {
-            let cells = Array.from(rows[i].childNodes);
+        for (let i = 0; i < 3; i++) {
+            // Get all cells with an x coordinate of i to get all cells in a given row
+            let cells = Array.from(document.querySelectorAll(`.cell[data-coordinate^="${i}"]`))
             if (winningArray(cells)) {
                 return true;
-            };
+            }
         };
         return false;
     };
 
-    const colScan = (cells) => {
+    const colScan = () => {
         for (let i = 0; i< 3; i++) {
-            let column = [];
-            cells.forEach(cell => {
-                if (cell.dataset.coordinate[2] == i) {
-                    column.push(cell);
-                };
-            });
+            let column = Array.from(document.querySelectorAll(`.cell[data-coordinate$="${i}"]`));
             if (winningArray(column)) {
                 return true;
             };
@@ -117,7 +112,8 @@ const Board = (player, cpu) => {
         return false;
     };
 
-    const diagonalScan = (cells) => {
+    const diagonalScan = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'))
         let diagonalOne = [cells[0], cells[4], cells[8]];
         let diagonalTwo = [cells[2], cells[4], cells[6]];
 
@@ -129,10 +125,17 @@ const Board = (player, cpu) => {
     };
 
     const winCondition = () => {
-        let cells = Array.from(document.querySelectorAll('.cell'));
-        if ( (rowScan()) || (colScan(cells)) || (diagonalScan(cells)) ) {
+
+        console.log("Row:" + rowScan())
+        console.log("Column:" + colScan())
+        console.log("Diagonal:" + diagonalScan())
+
+        if ( (rowScan()) || (colScan()) || (diagonalScan()) ) {
             return true;
-        };
+        } else {
+            return false;
+        }
+
     };
 
     const fullBoard = () => {
@@ -144,6 +147,7 @@ const Board = (player, cpu) => {
     };
 
     const terminalBoard = () => {
+
         if (winCondition() || fullBoard()) {
             return true;
         } else {
@@ -174,25 +178,44 @@ const Board = (player, cpu) => {
         };
     };
 
-    const setCellOnClicks = () => {
+    const winCheck = () => {
+        if (terminalBoard()) {
+            winState();
+        }
+    }
+
+    const gameRound = () => {
         let cells = Array.from(document.querySelectorAll('.cell'));
         cells.forEach(cell => {
-            cell.addEventListener('click', event => {
+            cell.addEventListener('click', cellClick = () => {
                 if (cell.dataset.value == "null") {
                     modifyCellValue(cell);
+                    winCheck();
                     setTimeout(() => { cpu.randomMove(); }, 500);
+                    winCheck();
                 }
-
             });
         });
     };
 
-    const winState = () => {
+    const endGame = () => {
+        let cells = Array.from(document.querySelectorAll('.cell'));
+        cells.forEach(cell => {
+            cell.removeEventListener('click', cellClick());
+        })
+    }
 
+    const winState = () => {
+        document.getElementById('game-board').classList.add('win-state');
+        document.getElementById('title').innerHTML = "Game Over!";
+        document.getElementById('start-button').innerHTML = "Play Again";
+        document.getElementById('game-setup').classList.remove('hidden');
+        endGame();
     }
 
     createBoard();
-    setCellOnClicks();
+    gameRound();
+    return { terminalBoard, winState }
 }
 
 const tictactoe = (() => {
@@ -200,7 +223,7 @@ const tictactoe = (() => {
     let boardDisplay = document.getElementById('game-board');
     
 
-    document.getElementById('start-button').addEventListener('click', event => {
+    document.getElementById('start-button').addEventListener('click', startGame = () => {
         let token = document.querySelector('input[name="token"]:checked').value;
         if (token == X) {
             var cpuToken = O;
@@ -216,7 +239,6 @@ const tictactoe = (() => {
         if (cpu.token == X) {
             cpu.randomMove();
         }
-
 
 
     });
