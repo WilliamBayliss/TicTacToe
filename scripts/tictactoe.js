@@ -125,11 +125,6 @@ const Board = (player, cpu) => {
     };
 
     const winCondition = () => {
-
-        console.log("Row:" + rowScan())
-        console.log("Column:" + colScan())
-        console.log("Diagonal:" + diagonalScan())
-
         if ( (rowScan()) || (colScan()) || (diagonalScan()) ) {
             return true;
         } else {
@@ -189,10 +184,20 @@ const Board = (player, cpu) => {
         cells.forEach(cell => {
             cell.addEventListener('click', cellClick = () => {
                 if (cell.dataset.value == "null") {
-                    modifyCellValue(cell);
-                    winCheck();
-                    setTimeout(() => { cpu.randomMove(); }, 500);
-                    winCheck();
+                    // Allow player to move if board not terminal
+                    if (!terminalBoard()) {
+                        modifyCellValue(cell);
+                        // Check for win condition after move and activate win state if true
+                        winCheck();
+                    }
+                    // Perform CPU move if board not terminal
+                    if (!terminalBoard()) {
+
+                        setTimeout(() => { cpu.randomMove(); }, 100);
+                        // Check for win condition after move and activate win state if true
+                        winCheck();
+                    }
+                    
                 }
             });
         });
