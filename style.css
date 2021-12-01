@@ -1,7 +1,7 @@
 #game-setup {
     position: absolute;
     width: 500px;
-    height: 225px;
+    height: fit-content;
     margin-top: 100px;
     border: 1px solid black;
     border-radius: 15px;
