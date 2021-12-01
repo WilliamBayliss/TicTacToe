@@ -184,6 +184,7 @@ const Board = (player, cpu) => {
         cells.forEach(cell => {
             cell.addEventListener('click', cellClick = () => {
                 if (cell.dataset.value == "null") {
+                    playerMove = currentPlayer();
                     // Allow player to move if board not terminal
                     if (!terminalBoard()) {
                         modifyCellValue(cell);
@@ -202,6 +203,7 @@ const Board = (player, cpu) => {
     };
 
     // Reset the value, innerHTML and CSS classes of every cell on the board
+    // Create new players based on updated token selection
     const newGame = () => {
         let gameBoard = document.getElementById('game-board')    
         gameBoard.classList.remove('win-state');
@@ -215,6 +217,7 @@ const Board = (player, cpu) => {
             cpu = ComputerPlayer(O);
         } else if (token == O) {
             cpu = ComputerPlayer(X);
+            cpu.randomMove();
         };
         gameRound();
     };
@@ -247,7 +250,6 @@ const tictactoe = (() => {
         } else if (token == O) {
             var cpuToken = X;
         }
-        console.log(token)
         let player = Player(token);
         let cpu = ComputerPlayer(cpuToken);
         setupDisplay.classList.add('hidden');
