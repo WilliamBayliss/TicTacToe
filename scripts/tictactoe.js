@@ -184,7 +184,6 @@ const Board = (player, cpu) => {
         cells.forEach(cell => {
             cell.addEventListener('click', cellClick = () => {
                 if (cell.dataset.value == "null") {
-                    playerMove = currentPlayer();
                     // Allow player to move if board not terminal
                     if (!terminalBoard()) {
                         modifyCellValue(cell);
@@ -193,7 +192,7 @@ const Board = (player, cpu) => {
                     }
                     // Perform CPU move if board not terminal
                     if (!terminalBoard()) {
-                        setTimeout(() => { cpu.randomMove(); }, 100);
+                        cpu.randomMove();
                         // Check for win condition after move and activate win state if true
                         winCheck();
                     }
@@ -205,6 +204,7 @@ const Board = (player, cpu) => {
     // Reset the value, innerHTML and CSS classes of every cell on the board
     // Create new players based on updated token selection
     const newGame = () => {
+        document.getElementById('title').innerHTML = "Tic Tac Toe!"
         let gameBoard = document.getElementById('game-board')    
         gameBoard.classList.remove('win-state');
         while (gameBoard.firstChild) {
@@ -223,8 +223,19 @@ const Board = (player, cpu) => {
     };
 
     const winState = () => {
+        if (winCondition()) {
+            let current = currentPlayer();
+            if (current == X) {
+                var winner = O
+            } else {
+                var winner = X
+            }
+            document.getElementById('title').innerHTML = `Game Over! ${winner} is the winner!`;
+
+        } else {
+            document.getElementById('title').innerHTML = 'Game Over! Draw!'
+        }
         document.getElementById('game-board').classList.add('win-state');
-        document.getElementById('title').innerHTML = "Game Over!";
         document.getElementById('start-button').innerHTML = "Play Again";
         document.getElementById('game-setup').classList.remove('hidden');
         document.getElementById('start-button').addEventListener('click', startNewGame = () => {
